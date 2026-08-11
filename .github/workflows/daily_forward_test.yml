@@ -29,7 +29,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add forward_test_results.csv
+        git add forward_test_results.csv || echo "Keine CSV vorhanden"
         git commit -m "Forward test results - $(date)" || echo "No changes"
         git push
       env:
