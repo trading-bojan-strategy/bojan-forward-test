@@ -77,8 +77,12 @@ try:
     print("ERGEBNISSE")
     print("="*60 + "\n")
     
+    csv_file = 'forward_test_results.csv'
+    file_exists = os.path.isfile(csv_file)
+    
     if len(trades) == 0:
         print("Keine Trades")
+        total, wins, wr, ret = 0, 0, 0, 0
     else:
         total = sum(trades)
         wins = len([x for x in trades if x > 0])
@@ -94,16 +98,11 @@ try:
         print(f"Wins:      {wins}")
         print(f"Win Rate:  {wr:.2f}%")
     
-        csv_file = 'forward_test_results.csv'
-        file_exists = os.path.isfile(csv_file)
+    with open(csv_file, 'a') as f:
+        if not file_exists:
+            f.write('Date,Trades,Wins,Win_Rate,Profit,Return_Pct\n')
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M')},{len(trades)},{wins},{wr:.2f},{total:.2f},{ret:.2f}\n")
         
-        with open(csv_file, 'a') as f:
-            if not file_exists:
-                f.write('Date,Trades,Wins,Win_Rate,Profit,Return_Pct\n')
-            f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M')},{len(trades)},{wins},{wr:.2f},{total:.2f},{ret:.2f}\n")
-    
-    print("\nOK - Gespeichert")
-
 except Exception as e:
     print(f"FEHLER: {str(e)}")
     exit(1)
